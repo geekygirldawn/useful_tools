@@ -4,7 +4,7 @@
 # Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
  
 # Quick Script to sync a fork from Github with the latest
-# changes from the upstream project. This is mostly so I stop
+# changes from the upstream project. This is mostly to prevent me from
 # forgetting that last step of pushing the changes.
 
 git fetch upstream
