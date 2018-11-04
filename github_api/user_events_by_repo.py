@@ -37,14 +37,14 @@ def get_user_repo_events():
     for event in person:
         if (repo_string in event.repo.url) or (repo_string == 'ALL'):
             if ('Issue' in event.type):
-                print(event.created_at, event.type, event.payload['action'])
-                print(event.payload['issue']['html_url'],'\n')
+                print(event.created_at, event.type, event.payload['action'], 
+                      event.payload['issue']['html_url'])
             elif ('Pull' in event.type):
-                print(event.created_at, event.type, event.payload['action'])
-                print(event.payload['pull_request']['html_url'],'\n')
+                print(event.created_at, event.type, event.payload['action'], 
+                      event.payload['pull_request']['html_url'])
             else:
-                print('Other event type:', event.type)
-                print(event.repo.url,'\n')
+                print('Other event type:', event.type,
+                       event.repo.url)
             count+=1
 
     print("Number of events", count)
