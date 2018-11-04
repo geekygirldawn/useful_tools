@@ -9,6 +9,9 @@ def get_user_repo_events():
     # Note: If you just want the list of URLs without duplicate events per URL you can use:
     # | grep http | uniq
 
+    # For all events across all repos use 'ALL' as the repo_string
+    # Example: user_events_by_repo.py key_filename gh_username ALL
+
     import sys
     from github import Github # Uses https://github.com/PyGithub/
     from common_gh_functions import read_key
@@ -32,7 +35,7 @@ def get_user_repo_events():
     count = 0
 
     for event in person:
-        if repo_string in event.repo.url:
+        if (repo_string in event.repo.url) or (repo_string == 'ALL'):
             if ('Issue' in event.type):
                 print(event.created_at, event.type, event.payload['action'])
                 print(event.payload['issue']['html_url'],'\n')
@@ -42,7 +45,7 @@ def get_user_repo_events():
             else:
                 print('Other event type:', event.type)
                 print(event.repo.url,'\n')
-        count+=1
+            count+=1
 
     print("Number of events", count)
 
