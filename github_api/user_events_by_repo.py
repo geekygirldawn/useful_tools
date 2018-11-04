@@ -6,9 +6,6 @@ def get_user_repo_events():
 
     # Limitation - this uses the event API, which is limited to the past 3 months of activity data
 
-    # Note: If you just want the list of URLs without duplicate events per URL you can use:
-    # | grep http | uniq
-
     # For all events across all repos use 'ALL' as the repo_string
     # Example: user_events_by_repo.py key_filename gh_username ALL
 
@@ -37,8 +34,12 @@ def get_user_repo_events():
     for event in person:
         if (repo_string in event.repo.url) or (repo_string == 'ALL'):
 
-            print(event.created_at, event.type,
-                  event.repo.html_url)
+            # Wrapped print in try / except since not every event has an html url
+            try:
+                print(event.created_at, event.type,
+                      event.repo.html_url)
+            except:
+                print(event.created_at, event.type, event.repo.url)
 
             count+=1
 
