@@ -1,3 +1,8 @@
+# Copyright (C) 2018 Dawn M. Foster
+# Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
+
+# Functions for use with the GitHub API.
+
 def read_key(file_name):
 
     # Reads the first line of a file containing the GitHub API key

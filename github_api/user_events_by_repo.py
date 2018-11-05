@@ -1,3 +1,9 @@
+# Copyright (C) 2018 Dawn M. Foster
+# Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
+
+# Get a list of events (pull request, issues, comments, etc.) by a specific user within
+# a specific repository search string or across all repositories for the past 3 months
+
 def get_user_repo_events():
 
     # Usage: user_events_by_repo.py key_filename gh_username repo_string
