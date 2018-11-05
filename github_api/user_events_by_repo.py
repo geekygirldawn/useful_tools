@@ -15,6 +15,10 @@ def get_user_repo_events():
     # For all events across all repos use 'ALL' as the repo_string
     # Example: user_events_by_repo.py key_filename gh_username ALL
 
+    # If you just want a list of unique sorted urls for the events, add this when you call the script
+    # | sed 's/^.*http/http/' | uniq | sort
+    # Example: user_events_by_repo.py gh_key geekygirldawn chaoss | sed 's/^.*http/http/' | uniq | sort
+
     import sys
     from github import Github # Uses https://github.com/PyGithub/
     from common_gh_functions import read_key
@@ -40,12 +44,19 @@ def get_user_repo_events():
     for event in person:
         if (repo_string in event.repo.url) or (repo_string == 'ALL'):
 
-            # Wrapped print in try / except since not every event has an html url
-            try:
-                print(event.created_at, event.type,
-                      event.repo.html_url)
-            except:
-                print(event.created_at, event.type, event.repo.url)
+            if ('Issue' in event.type):
+                print(event.created_at, event.type, event.payload['action'], 
+                      event.payload['issue']['html_url'])
+            elif ('Pull' in event.type):
+                print(event.created_at, event.type, event.payload['action'], 
+                      event.payload['pull_request']['html_url'])
+            else:
+                # Wrapped print in try / except since not every event has an html url
+                try:
+                    print(event.created_at, event.type,
+                          event.repo.html_url)
+                except:
+                    print(event.created_at, event.type, event.repo.url)
 
             count+=1
 
