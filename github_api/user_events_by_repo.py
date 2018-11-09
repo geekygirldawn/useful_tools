@@ -28,15 +28,16 @@ def get_user_repo_events():
     username = str(sys.argv[2])
     repo_string = str(sys.argv[3])
 
-    # Make sure people know exactly what they are getting
-    print('\n\nReading events from past 3 months for', username, 'in repos matching', repo_string, '\n')
-
     # Read GitHub API key from file and create a github instance using that key
     key = read_key('gh_key')
     g = Github(key)
 
-    # Reads all events over the past 3 months for this user
+    # Gets person's name and reads all events over the past 3 months for this user
+    name = g.get_user(username).name
     person = g.get_user(username).get_events()
+
+    # Make sure people know exactly what they are getting
+    print('\n\nReading events from past 3 months for', name, username, 'in repos matching', repo_string, '\n')
 
     # Loop through events, count them, and print details about each event
     count = 0
