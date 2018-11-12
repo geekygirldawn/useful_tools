@@ -16,7 +16,7 @@ def get_user_repo_events():
     # Example: user_events_by_repo.py key_filename gh_username ALL
 
     # If you just want a list of unique sorted urls for the events, add this when you call the script
-    # | sed 's/^.*http/http/' | uniq | sort
+    # | sed 's/^.*http/http/' | sort -u
     # Example: user_events_by_repo.py gh_key geekygirldawn chaoss | sed 's/^.*http/http/' | sort -u
 
     import sys
