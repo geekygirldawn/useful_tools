@@ -13,5 +13,7 @@
 git fetch upstream
 git checkout master
 git merge upstream/master
-echo "If this all worked, now do a"
+echo ""
+echo ""
+echo  "If this all worked, now do a"
 echo "$ git push origin master"
