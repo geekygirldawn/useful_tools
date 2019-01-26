@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2015 Dawn M. Foster
+# Copyright (C) 2019 Dawn M. Foster
 # Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
 
 # Examples
