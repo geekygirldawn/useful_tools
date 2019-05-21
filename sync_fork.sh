@@ -10,10 +10,33 @@
 # changes from the upstream project. This is mostly to prevent me from
 # forgetting that last step of pushing the changes.
 
-git fetch upstream
-git checkout master
-git merge upstream/master
-echo ""
-echo ""
-echo  "If this all worked, now do a"
-echo "$ git push origin master"
+# Check for unstashed / un-checked in changes
+
+git status
+
+read -p "Do you want to proceed? " -r
+
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    git fetch upstream
+    git checkout master
+    git merge upstream/master
+    echo 		# print blank line
+else
+    echo 		# print blank line
+    echo "Stopping without sync"
+    exit 0
+fi
+
+echo 		# print blank line
+
+read -p "Are you ready to push these changes to your local fork? " -r 
+
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    git push origin master
+else
+    echo 		# print blank line
+    echo "Stopping without pushing changes"
+    exit 0
+fi
