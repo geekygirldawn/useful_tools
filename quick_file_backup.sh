@@ -45,7 +45,7 @@ done
 if [ $VERSIONING = 1 ]; then
     cp -R "$SOURCE_PATH" "$DEST_PATH"$DATE
 else
-    cp -R "$SOURCE_PATH" "$DEST_PATH"
+    cp -p -R "$SOURCE_PATH" "$DEST_PATH" # -p preserves file modify, access times
 fi
 
 
