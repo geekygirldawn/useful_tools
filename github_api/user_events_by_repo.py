@@ -29,7 +29,6 @@ def get_user_repo_events():
     repo_string = str(sys.argv[3])
 
     # Read GitHub API key from file and create a github instance using that key
-    #key = read_key('gh_key')
     key = read_key(gh_key)
     g = Github(key)
 
