@@ -6,14 +6,14 @@
 
 def get_user_repo_events():
 
-    # Usage: user_events_by_repo.py key_filename gh_username repo_string
+    # Usage: user_events_by_repo.py gh_key gh_username repo_string
     # Example: user_events_by_repo.py gh_key geekygirldawn chaoss
-    # key_filename is the path to a file containing your GitHub API key as one line
+    # gh_key is the path to a file containing your GitHub API key as one line
 
     # Limitation - this uses the event API, which is limited to the past 3 months of activity data
 
     # For all events across all repos use 'ALL' as the repo_string
-    # Example: user_events_by_repo.py key_filename gh_username ALL
+    # Example: user_events_by_repo.py gh_key gh_username ALL
 
     # If you just want a list of unique sorted urls for the events, add this when you call the script
     # | sed 's/^.*http/http/' | sort -u
@@ -24,12 +24,13 @@ def get_user_repo_events():
     from common_gh_functions import read_key
 
     # Read arguments
-    key_filename = str(sys.argv[1])
+    gh_key = str(sys.argv[1])
     username = str(sys.argv[2])
     repo_string = str(sys.argv[3])
 
     # Read GitHub API key from file and create a github instance using that key
-    key = read_key('gh_key')
+    #key = read_key('gh_key')
+    key = read_key(gh_key)
     g = Github(key)
 
     # Gets person's name and reads all events over the past 3 months for this user
