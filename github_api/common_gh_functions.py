@@ -29,8 +29,10 @@ def download_file(url):
     if os.path.exists(output_file):
         shutil.move(output_file, output_bak)
 
+    print('Downloading file ... \n')
     sig_file = wget.download(url, out=output_file)
-    
+    print('\n\n', url, ' downloaded\n', sep='')
+
     return sig_file
 
 def username_details(username):
