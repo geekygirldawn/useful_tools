@@ -13,17 +13,18 @@ def read_key(file_name):
         key = kf.readline().rstrip() # remove newline & trailing whitespace
     return key
 
-def download_file(url,output_file):
+def download_file(url):
 
     # NOTE: Make sure you pass in the raw file.
-    # Example: sig_file = download_file('https://raw.githubusercontent.com/kubernetes/community/master/sigs.yaml', '/tmp/sigs.yaml')
+    # Example: sig_file = download_file('https://raw.githubusercontent.com/kubernetes/community/master/sigs.yaml')
 
     import wget
     import os
     import shutil
     import random
     
-    output_bak = output_file + '_bak_' + str(random.randint(0,1024))
+    output_file = '/tmp/output_file'
+    output_bak = 'output_file_bak_' + str(random.randint(0,1024))
 
     if os.path.exists(output_file):
         shutil.move(output_file, output_bak)
