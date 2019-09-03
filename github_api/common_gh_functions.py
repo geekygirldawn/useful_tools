@@ -35,7 +35,7 @@ def download_file(url):
 
     return sig_file
 
-def username_details(username):
+def username_details(g, username):
     
     name = g.get_user(username).name
     company = g.get_user(username).company
