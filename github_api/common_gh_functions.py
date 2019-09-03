@@ -24,7 +24,7 @@ def download_file(url):
     import random
     
     output_file = '/tmp/output_file'
-    output_bak = 'output_file_bak_' + str(random.randint(0,1024))
+    output_bak = output_file + str(random.randint(0,1024))
 
     if os.path.exists(output_file):
         shutil.move(output_file, output_bak)
