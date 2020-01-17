@@ -1,6 +1,14 @@
 # Copyright (C) 2020 Dawn M. Foster
 # Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
 
+# Requires:
+#   - gh_key file in the same directory as the script containing a valid github key
+#   - repos.csv file containing a comma separated list of org,repo pair on each line with no header
+
+# Output:
+#   - outputs a repo_data.csv file with results, including partial results if an api call failed.
+#   - prints errors to the screen
+
 def build_repo_list(filename):
 
     import csv
@@ -75,10 +83,13 @@ def get_repo_data():
             csv_output.write(str(forks))
             csv_output.write(',')
 
-            recent_release_date = str(repo.get_latest_release().created_at)
-            csv_output.write(str(recent_release_date))
-            csv_output.write(',')
-
+            try:
+                recent_release_date = str(repo.get_latest_release().created_at)
+                csv_output.write(str(recent_release_date))
+                csv_output.write(',')
+            except:
+                csv_output.write(',')
+                
             contributors = str(len(list(repo.get_contributors())))
             csv_output.write(str(contributors))
             csv_output.write('\n')
