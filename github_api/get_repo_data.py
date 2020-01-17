@@ -52,7 +52,7 @@ def get_repo_data():
             csv_output.write(url)
             csv_output.write(',')
 
-            recent_commit_date = str(repo.get_branch("master").commit.commit.author.date)
+            recent_commit_date = str(repo.get_branch(repo.default_branch).commit.commit.author.date)
             csv_output.write(recent_commit_date)
             csv_output.write(',')
             
@@ -86,6 +86,8 @@ def get_repo_data():
 #            line = ",".join([repo_string,  url, recent_commit_date, str(open_issues_num), str(open_prs_num), stars, forks, recent_release_date, contributors]) + "\n"
         except:
             print('incomplete or missing data for', repo_string)
+            csv_output.write('\n')
+
 
 
 get_repo_data()
