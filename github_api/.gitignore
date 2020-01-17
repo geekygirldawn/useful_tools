@@ -1,2 +1,4 @@
 gh_key
 __pycache__
+*csv*
+*.swp
