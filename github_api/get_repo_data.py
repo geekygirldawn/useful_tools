@@ -37,7 +37,7 @@ def get_repo_data():
 
     # create csv output file and write header line
     csv_output = open('repo_data.csv', 'w')
-    csv_output.write('Project,Repo URL,Last Commit,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors\n') 
+    csv_output.write('Project,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors\n') 
 
     rate_threshold = 5
 
@@ -60,9 +60,14 @@ def get_repo_data():
             csv_output.write(url)
             csv_output.write(',')
 
-            recent_commit_date = str(repo.get_branch(repo.default_branch).commit.commit.author.date)
+            recent_commit = repo.get_branch(repo.default_branch).commit.commit
+            recent_commit_date = str(recent_commit.author.date)
             csv_output.write(recent_commit_date)
             csv_output.write(',')
+            recent_commit_author = str(recent_commit.author.email)
+            csv_output.write(recent_commit_author)
+            csv_output.write(',')
+            
             
             # Note: repo.open_issues_count also contains open pull requests, so need to subtract PRs to separate nums
             open_all_num = repo.open_issues_count
