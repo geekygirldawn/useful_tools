@@ -37,7 +37,7 @@ def get_repo_data():
 
     # create csv output file and write header line
     csv_output = open('repo_data.csv', 'w')
-    csv_output.write('Project,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors\n') 
+    csv_output.write('Project,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Private\n') 
 
     rate_threshold = 5
 
@@ -97,7 +97,12 @@ def get_repo_data():
                 
             contributors = str(len(list(repo.get_contributors())))
             csv_output.write(str(contributors))
+            csv_output.write(',')
+
+            private = str(repo.private)
+            csv_output.write(private)
             csv_output.write('\n')
+
 
 #            line = ",".join([repo_string,  url, recent_commit_date, str(open_issues_num), str(open_prs_num), stars, forks, recent_release_date, contributors]) + "\n"
         except:
