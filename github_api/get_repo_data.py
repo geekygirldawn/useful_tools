@@ -44,10 +44,8 @@ def get_repo_data():
     for repo_string in repo_list:
 
         if g.rate_limiting[0] < rate_threshold:
-            print("API rate limit reached. Waiting for reset, which could take an hour")
-
-        while g.rate_limiting[0] < rate_threshold:
-            time.sleep(0.1)
+            print("Exiting: API rate limit reached - reset could take an hour")
+            break
 
         print('Processing:', repo_string)
 
