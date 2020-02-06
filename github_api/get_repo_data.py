@@ -1,62 +1,53 @@
 # Copyright (C) 2020 Dawn M. Foster
 # Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
 
-# Update this to gather repos directly to include pagination using:
-# org = g.get_organization("cf-platform-eng")
-# for repo in org.get_repos():
-#    print(repo.full_name)
+# Update this to read the output file as input passed via command line
 
 # Requires:
 #   - gh_key file in the same directory as the script containing a valid github key
-#   - repos.csv file containing a comma separated list of org,repo pair on each line with no header
+
+# Running:
+# requites a command line arg for GitHub organization name
+# Example: $ python3 get_repo_data.py appsuite
 
 # Output:
 #   - outputs a repo_data.csv file with results, including partial results if an api call failed.
-#   - prints errors to the screen
-
-def build_repo_list(filename):
-
-    import csv
-
-    repo_list = []
-
-    with open(filename, 'r') as csv_file:
-        output = csv.reader(csv_file)
-        for line in output:
-            repo = line[0] +  '/' + line[1]
-            repo_list.append(repo)
-
-    return repo_list
+#   - prints before / after rate limits and errors to the screen
 
 def get_repo_data():
-    import time, string
+    import time, string, sys
     from github import Github # Uses https://github.com/PyGithub/
     from common_gh_functions import read_key
-
-    # read csv with org,repo and reformat as list of org/repo for api
-    repo_list = build_repo_list('repos.csv')
 
     # read key from file named gh_key in the current dir
     key = read_key("gh_key")
     g = Github(key)
 
+    # Read arguments
+    org_name = str(sys.argv[1])
+
+    print("Starting rate limit:", g.get_rate_limit())
+
     # create csv output file and write header line
     csv_output = open('repo_data.csv', 'w')
-    csv_output.write('Project,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Private\n') 
+    csv_output.write('Org,Repo,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Private\n') 
 
     rate_threshold = 5
 
-    for repo_string in repo_list:
+    org = g.get_organization(org_name)
+    for repo in org.get_repos():
 
         if g.rate_limiting[0] < rate_threshold:
             print("Exiting: API rate limit reached - reset could take an hour")
             break
 
-        print('Processing:', repo_string)
+        print('Processing:', repo.full_name)
 
         try:
-            repo = g.get_repo(repo_string)
-            csv_output.write(repo_string)
+            csv_output.write(repo.owner.login)
+            csv_output.write(',')
+
+            csv_output.write(repo.name)
             csv_output.write(',')
 
             url = repo.html_url
@@ -112,6 +103,7 @@ def get_repo_data():
             print('incomplete or missing data for', repo_string)
             csv_output.write('\n')
 
-
+    
+    print("Ending rate limit:", g.get_rate_limit())
 
 get_repo_data()
