@@ -1,6 +1,11 @@
 # Copyright (C) 2020 Dawn M. Foster
 # Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
 
+# Update this to gather repos directly to include pagination using:
+# org = g.get_organization("cf-platform-eng")
+# for repo in org.get_repos():
+#    print(repo.full_name)
+
 # Requires:
 #   - gh_key file in the same directory as the script containing a valid github key
 #   - repos.csv file containing a comma separated list of org,repo pair on each line with no header
