@@ -22,18 +22,28 @@ def get_repo_data():
     g = Github(key)
 
     # Read arguments
-    org_name = str(sys.argv[1])
-    output_name = str(sys.argv[2])
+    # Make sure they are valid
+    try:
+        # Read org name and make initial API call to gather org data
+        org_name = str(sys.argv[1])
+        org = g.get_organization(org_name)
+    except:
+        print("Missing or invalid GitHub organization name")
+        quit()
+
+    try:
+        # Read output filename, create csv output file, and write header line
+        output_name = str(sys.argv[2])
+        csv_output = open(output_name, 'w')
+        csv_output.write('Org,Repo,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Size(KB),Private\n') 
+    except:
+        print("Missing or invalid output filename")
+        quit()
 
     print("Starting rate limit:", g.get_rate_limit())
 
-    # create csv output file and write header line
-    csv_output = open(output_name, 'w')
-    csv_output.write('Org,Repo,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Size(KB),Private\n') 
+    rate_threshold = 5 # each loop iteration uses 4-5 API calls
 
-    rate_threshold = 5
-
-    org = g.get_organization(org_name)
     for repo in org.get_repos():
 
         if g.rate_limiting[0] < rate_threshold:
@@ -81,6 +91,7 @@ def get_repo_data():
             csv_output.write(forks)
             csv_output.write(',')
 
+            # Wrapped since this call fails when there are no releases, and lots of projects don't make releases on GH
             try:
                 recent_release_date = str(repo.get_latest_release().created_at)
                 csv_output.write(recent_release_date)
@@ -96,6 +107,7 @@ def get_repo_data():
             csv_output.write(size)
             csv_output.write(',')
 
+            # Make sure that we're not accidentally gathering data from private repos.
             private = str(repo.private)
             csv_output.write(private)
             csv_output.write('\n')
