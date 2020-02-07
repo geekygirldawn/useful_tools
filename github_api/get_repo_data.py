@@ -1,18 +1,16 @@
 # Copyright (C) 2020 Dawn M. Foster
 # Licensed under GNU General Public License (GPL), version 3 or later: http://www.gnu.org/licenses/gpl.txt
 
-# Update this to read the output file as input passed via command line
-
 # Requires:
 #   - gh_key file in the same directory as the script containing a valid github key
 
-# Running:
-# requites a command line arg for GitHub organization name
-# Example: $ python3 get_repo_data.py appsuite
+# Usage:
+# Arguments required from the command line 1) GitHub organization name and 2) output file name
+# Example: $ python3 get_repo_data.py appsuite app.csv
 
 # Output:
-#   - outputs a repo_data.csv file with results, including partial results if an api call failed.
-#   - prints before / after rate limits and errors to the screen
+#   - outputs a csv file with results, including partial results if an api call failed.
+#   - prints before / after rate limits, each repo being processed, and errors to the screen
 
 def get_repo_data():
     import time, string, sys
@@ -25,11 +23,12 @@ def get_repo_data():
 
     # Read arguments
     org_name = str(sys.argv[1])
+    output_name = str(sys.argv[2])
 
     print("Starting rate limit:", g.get_rate_limit())
 
     # create csv output file and write header line
-    csv_output = open('repo_data.csv', 'w')
+    csv_output = open(output_name, 'w')
     csv_output.write('Org,Repo,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Size(KB),Private\n') 
 
     rate_threshold = 5
@@ -62,7 +61,6 @@ def get_repo_data():
             recent_commit_author = str(recent_commit.author.email)
             csv_output.write(recent_commit_author)
             csv_output.write(',')
-            
             
             # Note: repo.open_issues_count also contains open pull requests, so need to subtract PRs to separate nums
             open_all_num = repo.open_issues_count
@@ -102,12 +100,9 @@ def get_repo_data():
             csv_output.write(private)
             csv_output.write('\n')
 
-
-#            line = ",".join([repo_string,  url, recent_commit_date, str(open_issues_num), str(open_prs_num), stars, forks, recent_release_date, contributors]) + "\n"
         except:
             print('incomplete or missing data for', repo_string)
             csv_output.write('\n')
-
     
     print("Ending rate limit:", g.get_rate_limit())
 
