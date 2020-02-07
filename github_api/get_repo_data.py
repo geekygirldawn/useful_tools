@@ -30,7 +30,7 @@ def get_repo_data():
 
     # create csv output file and write header line
     csv_output = open('repo_data.csv', 'w')
-    csv_output.write('Org,Repo,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Private\n') 
+    csv_output.write('Org,Repo,Repo URL,Last Commit Date,Last Commit Author,Issues Needing Attention,PRs Needing Attention,Stars,Forks,Last Release (date),Contributors,Size(KB),Private\n') 
 
     rate_threshold = 5
 
@@ -58,6 +58,7 @@ def get_repo_data():
             recent_commit_date = str(recent_commit.author.date)
             csv_output.write(recent_commit_date)
             csv_output.write(',')
+
             recent_commit_author = str(recent_commit.author.email)
             csv_output.write(recent_commit_author)
             csv_output.write(',')
@@ -75,22 +76,26 @@ def get_repo_data():
             csv_output.write(',')
 
             stars = str(repo.stargazers_count)
-            csv_output.write(str(stars))
+            csv_output.write(stars)
             csv_output.write(',')
 
             forks = str(repo.forks_count)
-            csv_output.write(str(forks))
+            csv_output.write(forks)
             csv_output.write(',')
 
             try:
                 recent_release_date = str(repo.get_latest_release().created_at)
-                csv_output.write(str(recent_release_date))
+                csv_output.write(recent_release_date)
                 csv_output.write(',')
             except:
                 csv_output.write(',')
                 
             contributors = str(len(list(repo.get_contributors())))
-            csv_output.write(str(contributors))
+            csv_output.write(contributors)
+            csv_output.write(',')
+
+            size = str(repo.size)
+            csv_output.write(size)
             csv_output.write(',')
 
             private = str(repo.private)
