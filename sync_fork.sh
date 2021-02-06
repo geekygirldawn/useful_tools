@@ -12,6 +12,10 @@
 
 # Check for unstashed / un-checked in changes
 
+read -p "Branch name: " -r
+
+branch=$REPLY
+
 git status
 
 read -p "Do you want to proceed? " -r
@@ -19,8 +23,8 @@ read -p "Do you want to proceed? " -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     git fetch upstream
-    git checkout master
-    git merge upstream/master
+    git checkout $branch
+    git merge upstream/$branch
     echo 		# print blank line
 else
     echo 		# print blank line
@@ -34,7 +38,7 @@ read -p "Are you ready to push these changes to your local fork? " -r
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-    git push origin master
+    git push origin $branch
 else
     echo 		# print blank line
     echo "Stopping without pushing changes"
