@@ -12,9 +12,11 @@
 
 # Check for unstashed / un-checked in changes
 
-read -p "Branch name: " -r
+read -p "Branch name [master]: " branch
 
-branch=$REPLY
+branch=${branch:-master}
+
+printf "Using branch $branch\n\n"
 
 git status
 
