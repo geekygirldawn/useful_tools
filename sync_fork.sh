@@ -10,13 +10,16 @@
 # changes from the upstream project. This is mostly to prevent me from
 # forgetting that last step of pushing the changes.
 
-# Check for unstashed / un-checked in changes
+# Get branch name as input for branches that are now called main or something else.
+# Currently defaults to master, but I should eventually change this when more have moved.
 
 read -p "Branch name [master]: " branch
 
 branch=${branch:-master}
 
 printf "Using branch $branch\n\n"
+
+# Check for unstashed / un-checked in changes
 
 git status
 
